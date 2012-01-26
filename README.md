@@ -6,7 +6,7 @@ This is an [EditorConfig][] plugin for [Code::Blocks][].
 
 ### Install from Source
 
-Before installation, you must have both [Code::Blocks][] installed.
+Before installation, you must have [Code::Blocks][] installed.
 
 1.  Download the [EditorConfig core][] and follow the instructions in the README
     and INSTALL files to compile and install it.
@@ -38,7 +38,7 @@ The EditorConfig Code::Blocks plugin supports the following EditorConfig
 
 
 [CBEditorConfig]: https://github.com/editorconfig/editorconfig-codeblocks
-[CodeBlocks]: http://www.codeblocks.org
+[Code::Blocks]: http://www.codeblocks.org
 [EditorConfig]: http://editorconfig.org
 [EditorConfig core]: https://github.com/editorconfig/editorconfig
 [properties]: http://editorconfig.org/#supported-properties
