@@ -109,7 +109,10 @@ private:
       */
     void OnEditorOpen(CodeBlocksEvent& event);
 
-    void LoadConfig(const wxString& fileName);
+    int LoadConfig(const wxString& fileName);
+
+    // Reload Editor Config menu item
+    void OnReloadEditorConfig(wxCommandEvent& event);
 };
 
 #endif // CBEDITORCONFIG_HPP_INCLUDED

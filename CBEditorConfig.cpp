@@ -30,6 +30,8 @@
 #include "cbeditor.h"
 #include "cbstyledtextctrl.h"
 #include "CBEditorConfig.hpp"
+#include <wx/event.h>
+#include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <editorconfig/editorconfig.h>
 
@@ -66,7 +68,7 @@ void CBEditorConfig::OnAttach()
                 &CBEditorConfig::OnEditorOpen));
 }
 
-void CBEditorConfig::LoadConfig(const wxString& fileName)
+int CBEditorConfig::LoadConfig(const wxString& fileName)
 {
     editorconfig_handle eh = editorconfig_handle_init();
 
@@ -76,11 +78,8 @@ void CBEditorConfig::LoadConfig(const wxString& fileName)
             /* Ignore full path error, whose error code is
              * EDITORCONFIG_PARSE_NOT_FULL_PATH */
             err_num != EDITORCONFIG_PARSE_NOT_FULL_PATH) {
-        wxString err_msg;
-        err_msg << wxT("EditorConfig Error: ") << err_num;
-        wxMessageDialog(NULL, err_msg, wxT("EditorConfig"), wxOK);
         editorconfig_handle_destroy(eh);
-        return;
+        return err_num;
     }
 
     // apply the settings
@@ -145,6 +144,8 @@ void CBEditorConfig::LoadConfig(const wxString& fileName)
     }
 
     editorconfig_handle_destroy(eh);
+
+    return 0;
 }
 
 void CBEditorConfig::OnEditorOpen(CodeBlocksEvent& event)
@@ -171,8 +172,23 @@ int CBEditorConfig::GetConfigurationGroup() const
     return  cgUnknown;
 }
 
-void CBEditorConfig::BuildMenu(wxMenuBar* /*menuBar*/)
+void CBEditorConfig::BuildMenu(wxMenuBar* menuBar)
 {
+    // Add a menu under "Plugins"
+    int pluginMenuPos = menuBar->FindMenu(_T("Plugins"));
+
+    if (pluginMenuPos == wxNOT_FOUND)
+        return;
+
+    wxMenu* pluginMenu = menuBar->GetMenu(pluginMenuPos);
+    long menuIdReload = wxNewId();
+    pluginMenu->Prepend(menuIdReload, _T("Reload &EditorConfig"),
+            _T("Reload EditorConfig"));
+
+    //event handling
+    Connect(menuIdReload, wxEVT_COMMAND_MENU_SELECTED,
+            wxCommandEventHandler(CBEditorConfig::OnReloadEditorConfig));
+
     return;
 }
 
@@ -186,4 +202,25 @@ void CBEditorConfig::BuildModuleMenu(const ModuleType /*type*/,
 bool CBEditorConfig::BuildToolBar(wxToolBar* /*toolBar*/)
 {
     return false;
+}
+
+void CBEditorConfig::OnReloadEditorConfig(wxCommandEvent& event)
+{
+    int err_num;
+
+    // Reload EditorConfig
+    if ((err_num = LoadConfig(Manager::Get()->GetEditorManager(
+                        )->GetActiveEditor()->GetFilename())) != 0) {
+        wxString err_msg;
+
+        err_msg << wxT("EditorConfig Error: ") <<
+            wxString(editorconfig_get_error_msg(err_num), wxConvUTF8) <<
+            _T("(") << err_num << _T(")");
+        wxMessageDialog(NULL, err_msg, wxT("EditorConfig"), wxOK).ShowModal();
+
+        return;
+    }
+
+    wxMessageDialog(NULL, _T("EditorConfig successfully reloaded."),
+            _T("EditorConfig"), wxOK).ShowModal();
 }
