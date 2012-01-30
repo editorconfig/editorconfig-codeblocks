@@ -109,7 +109,7 @@ private:
       */
     void OnEditorOpen(CodeBlocksEvent& event);
 
-    int LoadConfig(const wxString& fileName);
+    int LoadConfig();
 
     // Reload Editor Config menu item
     void OnReloadEditorConfig(wxCommandEvent& event);

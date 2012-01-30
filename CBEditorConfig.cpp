@@ -68,13 +68,25 @@ void CBEditorConfig::OnAttach()
                 &CBEditorConfig::OnEditorOpen));
 }
 
-int CBEditorConfig::LoadConfig(const wxString& fileName)
+int CBEditorConfig::LoadConfig()
 {
+    // get the cbEditor and cbStyledTextCtrl
+    cbEditor *ed =
+        Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
+
+    if (!ed)
+        return -1;
+
+    cbStyledTextCtrl* control = ed->GetControl();
+
+    if (!control)
+        return -1;
+
     editorconfig_handle eh = editorconfig_handle_init();
 
     /* start parsing */
     int err_num;
-    if ((err_num = editorconfig_parse(fileName.ToAscii(), eh)) != 0 &&
+    if ((err_num = editorconfig_parse(ed->GetFilename().ToAscii(), eh)) != 0 &&
             /* Ignore full path error, whose error code is
              * EDITORCONFIG_PARSE_NOT_FULL_PATH */
             err_num != EDITORCONFIG_PARSE_NOT_FULL_PATH) {
@@ -111,11 +123,6 @@ int CBEditorConfig::LoadConfig(const wxString& fileName)
             ecConf.end_of_line = value;
     }
 
-    // get the cbEditor and cbStyledTextCtrl
-    cbEditor *ed =
-        Manager::Get()->GetEditorManager()->GetBuiltinActiveEditor();
-    cbStyledTextCtrl* control = ed->GetControl();
-
     if (ecConf.indent_style) {
         if (!strcmp(ecConf.indent_style, "tab"))
             control->SetUseTabs(true);
@@ -148,9 +155,9 @@ int CBEditorConfig::LoadConfig(const wxString& fileName)
     return 0;
 }
 
-void CBEditorConfig::OnEditorOpen(CodeBlocksEvent& event)
+void CBEditorConfig::OnEditorOpen(CodeBlocksEvent& /* event */)
 {
-    LoadConfig(event.GetEditor()->GetFilename());
+    LoadConfig();
 }
 
 void CBEditorConfig::OnRelease(bool /* appShutDown */)
@@ -209,8 +216,7 @@ void CBEditorConfig::OnReloadEditorConfig(wxCommandEvent& event)
     int err_num;
 
     // Reload EditorConfig
-    if ((err_num = LoadConfig(Manager::Get()->GetEditorManager(
-                        )->GetActiveEditor()->GetFilename())) != 0) {
+    if ((err_num = LoadConfig()) != 0) {
         wxString err_msg;
 
         err_msg << wxT("EditorConfig Error: ") <<
