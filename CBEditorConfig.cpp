@@ -104,6 +104,8 @@ int CBEditorConfig::LoadConfig()
         const char*     end_of_line;
     } ecConf; // obtained EditorConfig settings will be here
 
+    memset(&ecConf, 0, sizeof(ecConf));
+
     int name_value_count = editorconfig_handle_get_name_value_count(eh);
 
     // get settings
