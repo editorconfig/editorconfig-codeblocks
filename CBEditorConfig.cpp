@@ -140,7 +140,7 @@ int CBEditorConfig::LoadConfig()
     }
 
     if (ecConf.tab_width > 0)
-        control->SetTabWidth(ecConf.indent_size);
+        control->SetTabWidth(ecConf.tab_width);
 
     // set eol
     if (ecConf.end_of_line) {
