@@ -99,6 +99,7 @@ int CBEditorConfig::LoadConfig()
     struct
     {
         const char*     indent_style;
+#define INDENT_SIZE_TAB (-1000) /* indent_size = -1000 means indent_size = tab*/
         int             indent_size;
         int             tab_width;
         const char*     end_of_line;
@@ -119,8 +120,14 @@ int CBEditorConfig::LoadConfig()
             ecConf.indent_style = value;
         else if (!strcmp(name, "tab_width"))
             ecConf.tab_width = atoi(value);
-        else if (!strcmp(name, "indent_size"))
-            ecConf.indent_size = atoi(value);
+        else if (!strcmp(name, "indent_size")) {
+            int     value_i = atoi(value);
+
+            if (!strcmp(value, "tab"))
+                ecConf.indent_size = INDENT_SIZE_TAB;
+            else if (value_i > 0)
+                ecConf.indent_size = value_i;
+        }
         else if (!strcmp(name, "end_of_line"))
             ecConf.end_of_line = value;
     }
@@ -141,6 +148,10 @@ int CBEditorConfig::LoadConfig()
 
     if (ecConf.tab_width > 0)
         control->SetTabWidth(ecConf.tab_width);
+
+    if (ecConf.indent_size == INDENT_SIZE_TAB)
+        /* set indent_size to tab_width here */
+        control->SetIndent(control->GetTabWidth());
 
     // set eol
     if (ecConf.end_of_line) {
