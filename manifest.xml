@@ -30,7 +30,7 @@
   <SdkVersion major="1" minor="11"  release="12" />
   <Plugin name="CBEditorConfig">
     <Value title="EditorConfig plugin for Code::Blocks" />
-    <Value version="0.1" />
+    <Value version="0.2" />
     <Value description="EditorConfig plugin for Code::Blocks" />
     <Value author="EditorConfig Team" />
     <Value authorEmail="" />
