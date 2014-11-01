@@ -7,14 +7,15 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
-				<Option output="CBEditorConfig" prefix_auto="1" extension_auto="1" />
+				<Option output="CBEditorConfig" prefix_auto="0" extension_auto="1" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option host_application="codeblocks" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="`pkg-config --cflags codeblocks`" />
-					<Add option="`wx-config --cflags`" />
+					<Add option="-Ulinux -Uunix" />
+					<Add option="-I/usr/include/codeblocks -I/usr/include/codeblocks/tinyxml -I/usr/include/codeblocks/scripting/include -I/usr/include/codeblocks/scripting/bindings -I/usr/include/codeblocks/scripting/sqplus -I/usr/include/codeblocks/wxscintilla/include" />
+					<Add option="-I/usr/lib/i386-linux-gnu/wx/include/gtk2-unicode-release-2.8 -I/usr/include/wx-2.8 -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -D__WXGTK__ -pthread" />
 					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
