@@ -15,6 +15,7 @@
 					<Add option="-g" />
 					<Add option="`pkg-config --cflags codeblocks`" />
 					<Add option="`wx-config --cflags`" />
+					<Add option="-Ulinux -Uunix" />
 					<Add option="-fPIC" />
 				</Compiler>
 				<Linker>
