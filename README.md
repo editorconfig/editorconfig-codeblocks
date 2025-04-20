@@ -39,6 +39,6 @@ The EditorConfig Code::Blocks plugin supports the following EditorConfig
 
 [CBEditorConfig]: https://github.com/editorconfig/editorconfig-codeblocks
 [Code::Blocks]: http://www.codeblocks.org
-[EditorConfig]: http://editorconfig.org
+[EditorConfig]: https://editorconfig.org
 [EditorConfig core]: https://github.com/editorconfig/editorconfig-core
-[properties]: http://editorconfig.org/#supported-properties
+[properties]: https://editorconfig.org/#supported-properties

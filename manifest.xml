@@ -34,7 +34,7 @@
     <Value description="EditorConfig plugin for Code::Blocks" />
     <Value author="EditorConfig Team" />
     <Value authorEmail="" />
-    <Value authorWebsite="http://editorconfig.org" />
+    <Value authorWebsite="https://editorconfig.org" />
     <Value thanksTo="" />
     <Value license="Simplified BSD License" />
   </Plugin>
